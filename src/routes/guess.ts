@@ -26,7 +26,6 @@ export async function guessRoutes(fastify: FastifyInstance) {
     const { poolId, gameId } = createGuessParams.parse(request.params)
     const { firstTeamPoints, secondTeamPoints } = createGuessBody.parse(request.body)
     
-
     const participant = await prisma.participant.findUnique({
       where: {
         userId_poolId: {
@@ -69,7 +68,7 @@ export async function guessRoutes(fastify: FastifyInstance) {
       })
     }
 
-    if (game.date < new Date()) {
+    if (game.date > new Date()) {
       return reply.status(400).send({
         message: 'You can not send a guess after the game date.'
       })
